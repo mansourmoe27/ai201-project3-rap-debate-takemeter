@@ -70,6 +70,60 @@ If ridicule or mockery is the primary purpose of the post, classify it as insult
 If the post includes evidence, examples, statistics, influence, awards, albums, or reasoning, classify it as `evidence_based_argument`.
 
 If the post only states a preference or ranking without supporting evidence, classify it as `opinion_reaction`.
+## Difficult Annotation Cases
+
+### Case 1
+
+**Post:**
+"Family Matters is my favorite diss track."
+
+**Possible Labels:**
+
+* lyrical_analysis
+* opinion_reaction
+
+**Decision:**
+I labeled this as `opinion_reaction`.
+
+**Reason:**
+The comment mentions a diss track, but it does not explain anything about lyrics, flow, structure, delivery, or songwriting. It is mainly a personal preference.
+
+---
+
+### Case 2
+
+**Post:**
+"Drake is the GOAT because he has been the most streamed rapper for over a decade."
+
+**Possible Labels:**
+
+* opinion_reaction
+* evidence_based_argument
+
+**Decision:**
+I labeled this as `evidence_based_argument`.
+
+**Reason:**
+The phrase "Drake is the GOAT" is an opinion, but the comment supports the claim with measurable evidence about streaming and longevity.
+
+---
+
+### Case 3
+
+**Post:**
+"Drake fans will not accept the L."
+
+**Possible Labels:**
+
+* opinion_reaction
+* insult_meme
+
+**Decision:**
+I labeled this as `insult_meme`.
+
+**Reason:**
+The comment is not making a serious argument. Its main purpose is to mock Drake fans, so it fits the insult or meme category.
+
 
 
 ## Why These Labels Matter
