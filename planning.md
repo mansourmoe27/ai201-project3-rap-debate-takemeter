@@ -72,6 +72,37 @@ If the post includes evidence, examples, statistics, influence, awards, albums, 
 If the post only states a preference or ranking without supporting evidence, classify it as `opinion_reaction`.
 
 
-Why These Labels Matter
+## Why These Labels Matter
 Rap discussions frequently mix analysis, evidence-based debate, emotional reactions, and memes. These four labels capture common forms of discourse found in online rap communities while maintaining clear boundaries between categories. The goal is to determine whether a fine-tuned model can learn these distinctions and classify new posts accurately.
 
+## Data Collection Plan
+
+I collected examples from public Reddit communities such as r/rap, r/hiphopheads, r/Drizzy, and r/KendrickLamar. My goal was to collect at least 200 comments and label them using my four categories: lyrical_analysis, evidence_based_argument, opinion_reaction, and insult_meme.
+
+I originally aimed for about 50 examples per label. If one category ended up with fewer examples than the others, I planned to collect more comments from that category to make the dataset more balanced.
+
+## Evaluation Metrics
+
+I will evaluate my classifier using accuracy, per-class accuracy, and a confusion matrix.
+
+Accuracy shows how many predictions the model gets correct overall. Per-class accuracy helps me see how well the model performs on each label individually. The confusion matrix will help me identify which labels the model mixes up most often.
+
+## Definition of Success
+
+I would consider the project successful if the model achieves at least 80% overall accuracy.
+
+I would also like each label category to have at least 70% accuracy. A useful classifier should be able to tell the difference between analysis, evidence-based arguments, opinions, and memes most of the time.
+
+## AI Tool Plan
+
+### Label Stress-Testing
+
+I used ChatGPT to help test my labels by generating examples that were difficult to classify. If an example seemed to fit more than one label, I updated my definitions and decision rules to make the categories clearer.
+
+### Annotation Assistance
+
+I used ChatGPT to help organize and review potential examples from Reddit. However, I manually checked every example before adding it to the final dataset.
+
+### Failure Analysis
+
+After testing the model, I will review the examples it gets wrong. I may use ChatGPT to help identify patterns in the mistakes, but I will verify those patterns myself before including them in my final analysis.
