@@ -160,3 +160,26 @@ I used ChatGPT to help organize and review potential examples from Reddit. Howev
 ### Failure Analysis
 
 After testing the model, I will review the examples it gets wrong. I may use ChatGPT to help identify patterns in the mistakes, but I will verify those patterns myself before including them in my final analysis.
+
+## Baseline Results
+
+The zero-shot Groq baseline achieved 80% accuracy on the test set.
+
+### Per-Class Performance
+
+| Label                   | Precision | Recall | F1-Score |
+| ----------------------- | --------- | ------ | -------- |
+| lyrical_analysis        | 1.00      | 0.60   | 0.75     |
+| evidence_based_argument | 1.00      | 0.73   | 0.84     |
+| opinion_reaction        | 0.50      | 1.00   | 0.67     |
+| insult_meme             | 1.00      | 1.00   | 1.00     |
+
+### Reflection
+
+The baseline performed best on insult_meme, achieving perfect precision and recall. It also performed well on evidence_based_argument posts.
+
+The model struggled most with lyrical_analysis and opinion_reaction. Lyrical analysis posts were sometimes confused with other discussion categories, while opinion_reaction was often over-predicted.
+
+My hypothesis is that a fine-tuned model trained on rap debate discourse will better distinguish between lyrical analysis, evidence-based arguments, and opinion-based reactions than a general-purpose language model.
+
+
