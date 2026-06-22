@@ -1,4 +1,3 @@
-# ai201-project3-rap-debate-takemeter
 # Rap Debate TakeMeter
 
 ## Project Overview
@@ -22,39 +21,53 @@ These communities contain a mix of lyric analysis, debate, opinions, memes, and 
 
 ---
 
-## Labels
+## Label Taxonomy
 
-### lyrical_analysis
+### 1. lyrical_analysis
 
 Discussion of bars, lyricism, rhyme schemes, punchlines, flow, delivery, storytelling, wordplay, or songwriting techniques.
 
-Example:
+Examples:
 
 > "Jay's MSG freestyle had more lyrical density than Iceman."
 
-### evidence_based_argument
+> "Kendrick's repetition on Not Like Us made the record more effective."
+
+---
+
+### 2. evidence_based_argument
 
 Uses facts, statistics, chart performance, sales numbers, awards, influence, historical comparisons, or logical reasoning to support a claim.
 
-Example:
+Examples:
 
 > "Drake has been the most streamed rapper for over a decade."
 
-### opinion_reaction
+> "Jay-Z has more classic albums and a longer run at the top."
+
+---
+
+### 3. opinion_reaction
 
 Expresses a personal opinion, preference, belief, ranking, or emotional reaction without substantial supporting evidence.
 
-Example:
+Examples:
 
 > "Kendrick won."
 
-### insult_meme
+> "I still think Drake is better."
+
+---
+
+### 4. insult_meme
 
 Posts whose primary purpose is mockery, trolling, insults, memes, or dismissive commentary.
 
-Example:
+Examples:
 
 > "Drake is a clown."
+
+> "Trash."
 
 ---
 
@@ -70,46 +83,220 @@ Dataset file:
 
 `rap_debate_dataset.csv`
 
----
+### Label Distribution
 
-## Baseline Results (Groq)
+Include the actual counts from your dataset here.
 
-The zero-shot baseline used Groq's Llama 3.3 70B model with prompt-based classification.
-
-### Accuracy
-
-77.1%
-
----
-
-## Fine-Tuned DistilBERT Results
-
-A DistilBERT classifier was fine-tuned for 3 epochs using the labeled dataset.
-
-### Accuracy
-
-48.6%
+| Label                   | Count |
+| ----------------------- | ----: |
+| lyrical_analysis        |    XX |
+| evidence_based_argument |    XX |
+| opinion_reaction        |    XX |
+| insult_meme             |    XX |
 
 ---
 
-## Results Comparison
+## Data Collection Process
+
+Examples were manually collected from public Reddit rap communities. Each post was reviewed individually and assigned one label based on the definitions established in planning.md.
+
+The goal was to maintain a balanced dataset across all four categories and avoid a situation where one category dominated the training set.
+
+---
+
+## Difficult Annotation Cases
+
+### Case 1
+
+Post:
+
+> "Family Matters is my favorite diss track."
+
+Possible Labels:
+
+* lyrical_analysis
+* opinion_reaction
+
+Decision:
+
+I labeled this as opinion_reaction because the comment expresses a preference without discussing lyrics, flow, delivery, or songwriting.
+
+---
+
+### Case 2
+
+Post:
+
+> "Drake is the GOAT because he has been the most streamed rapper for over a decade."
+
+Possible Labels:
+
+* opinion_reaction
+* evidence_based_argument
+
+Decision:
+
+I labeled this as evidence_based_argument because the claim is supported with measurable evidence.
+
+---
+
+### Case 3
+
+Post:
+
+> "Drake fans will not accept the L."
+
+Possible Labels:
+
+* opinion_reaction
+* insult_meme
+
+Decision:
+
+I labeled this as insult_meme because the primary purpose of the comment is mockery rather than discussion.
+
+---
+
+## Fine-Tuning Approach
+
+Base Model:
+
+`distilbert-base-uncased`
+
+Training Configuration:
+
+* Epochs: 3
+* Learning Rate: 2e-5
+* Batch Size: 16
+
+I used the default notebook settings because they are commonly used for text classification tasks and were appropriate for the size of my dataset.
+
+---
+
+## Baseline Model
+
+The baseline model used Groq's `llama-3.3-70b-versatile` model.
+
+The prompt included definitions for all four labels and instructed the model to return only the label name for each post.
+
+The baseline was evaluated on the same test set used for the fine-tuned model.
+
+---
+
+## Evaluation Results
+
+### Accuracy Comparison
 
 | Model                   | Accuracy |
-| ----------------------- | -------- |
-| Groq Zero-Shot Baseline | 77.1%    |
-| Fine-Tuned DistilBERT   | 48.6%    |
+| ----------------------- | -------: |
+| Groq Zero-Shot Baseline |    77.1% |
+| Fine-Tuned DistilBERT   |    48.6% |
 
-Fine-tuning resulted in a performance decrease of 28.6 percentage points compared to the baseline.
+The fine-tuned model performed 28.6 percentage points worse than the zero-shot baseline.
 
 ---
 
-## Error Analysis
+## Fine-Tuned Model Metrics
 
-The fine-tuned model performed best on evidence_based_argument examples but struggled with opinion_reaction and insult_meme examples.
+| Label                   | Precision | Recall |   F1 |
+| ----------------------- | --------: | -----: | ---: |
+| lyrical_analysis        |      0.33 |   0.60 | 0.43 |
+| evidence_based_argument |      0.65 |   1.00 | 0.79 |
+| opinion_reaction        |      0.00 |   0.00 | 0.00 |
+| insult_meme             |      0.00 |   0.00 | 0.00 |
 
-One possible explanation is that the dataset was relatively small for training a transformer model. Many rap discussion posts contain overlapping characteristics such as opinions, evidence, humor, and analysis, making classification difficult.
+---
 
-The Groq baseline likely benefited from broader language understanding and world knowledge, while the fine-tuned DistilBERT model relied entirely on the limited labeled dataset.
+## Confusion Matrix
+
+See `confusion_matrix.png` for the full visualization.
+
+The confusion matrix shows that the model frequently confused opinion-based and meme-based comments with evidence-based arguments and lyrical analysis.
+
+---
+
+## Failure Analysis
+
+### Example 1
+
+True Label:
+
+`opinion_reaction`
+
+Predicted Label:
+
+`evidence_based_argument`
+
+Analysis:
+
+The model appeared to focus on artist comparison language rather than the lack of supporting evidence.
+
+---
+
+### Example 2
+
+True Label:
+
+`insult_meme`
+
+Predicted Label:
+
+`opinion_reaction`
+
+Analysis:
+
+Short meme-like comments often lack enough context for the model to distinguish mockery from ordinary opinions.
+
+---
+
+### Example 3
+
+True Label:
+
+`lyrical_analysis`
+
+Predicted Label:
+
+`evidence_based_argument`
+
+Analysis:
+
+Posts discussing lyric quality sometimes resemble arguments because they include comparisons and reasoning.
+
+---
+
+## Sample Classifications
+
+| Example                                                      | Predicted Label         |
+| ------------------------------------------------------------ | ----------------------- |
+| "Drake is a clown."                                          | insult_meme             |
+| "Kendrick won."                                              | opinion_reaction        |
+| "Jay had better wordplay on the freestyle."                  | lyrical_analysis        |
+| "Drake has been the most streamed rapper for over a decade." | evidence_based_argument |
+
+One correctly classified example was:
+
+> "Jay had better wordplay on the freestyle."
+
+This prediction is reasonable because the comment directly discusses lyrical technique.
+
+---
+
+## Reflection
+
+My goal was to teach the model to distinguish between analysis, evidence-based arguments, opinions, and memes.
+
+The model learned some of these distinctions, particularly evidence-based arguments, but struggled with opinion_reaction and insult_meme categories. This suggests that the model relied heavily on keywords and surface-level patterns rather than fully understanding discourse intent.
+
+The Groq baseline benefited from broader language understanding and significantly outperformed the fine-tuned DistilBERT model.
+
+---
+
+## Spec Reflection
+
+The project specification helped me think carefully about label definitions before collecting data. Establishing clear decision rules early made annotation more consistent.
+
+One way my implementation differed from my expectations was that the fine-tuned model did not outperform the baseline. I originally expected task-specific training to improve performance, but the baseline performed substantially better.
 
 ---
 
@@ -119,9 +306,16 @@ The Groq baseline likely benefited from broader language understanding and world
 * rap_debate_dataset.csv
 * evaluation_results.json
 * confusion_matrix.png
+* ai201_project3_takemeter.ipynb
 
 ---
 
 ## AI Usage
 
-ChatGPT was used for label stress-testing, dataset organization, annotation review, and failure analysis. All labels were manually reviewed before inclusion in the final dataset.
+1. I used ChatGPT to stress-test my label definitions by generating examples that sat between two labels.
+
+2. I used ChatGPT to help organize and review difficult annotation decisions before adding examples to the dataset.
+
+3. I used ChatGPT during failure analysis to identify patterns among incorrect predictions and suggest possible explanations.
+
+All final labeling decisions were reviewed manually before inclusion in the dataset.
